@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>轮播图点击切换</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .slider {
+      width: 560px;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .slider-wrapper {
+      width: 100%;
+      height: 320px;
+    }
+
+    .slider-wrapper img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .slider-footer {
+      height: 80px;
+      background-color: rgb(100, 67, 68);
+      padding: 12px 12px 0 12px;
+      position: relative;
+    }
+
+    .slider-footer .toggle {
+      position: absolute;
+      right: 0;
+      top: 12px;
+      display: flex;
+    }
+
+    .slider-footer .toggle button {
+      margin-right: 12px;
+      width: 28px;
+      height: 28px;
+      appearance: none;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .slider-footer .toggle button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .slider-footer p {
+      margin: 0;
+      color: #fff;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .slider-indicator {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .slider-indicator li {
+      width: 8px;
+      height: 8px;
+      margin: 4px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0.4;
+      cursor: pointer;
+    }
+
+    .slider-indicator li.active {
+      width: 12px;
+      height: 12px;
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slider">
+    <div class="slider-wrapper">
+      <img src="./images/slider01.jpg" alt="" />
+    </div>
+    <div class="slider-footer">
+      <p>对人类来说会不会太超前了？</p>
+      <ul class="slider-indicator">
+        <li class="active" id="number1"></li>
+        <li id="number2"></li>
+        <li id="number3"></li>
+        <li id="number4"></li>
+        <li id="number5"></li>
+        <li id="number6"></li>
+        <li id="number7"></li>
+        <li id="number8"></li>
+      </ul>
+      <div class="toggle">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 完成视频中的图片自动切换的功能，并且可以点击进行切换
+    // 提示，初始数据可以定义数组对象变量存放 
+    // 例如 const sliderData = [
+    //   { url: './images/slider01.jpg', title: '对人类来说会不会太超前了？', color: 'rgb(100, 67, 68)' },
+    // ]
+    const sliderData = [
+      { url: './images/slider01.jpg', title: '对人类来说会不会太超前了？', color: 'rgb(100, 67, 68)' },
+      { url: './images/slider02.jpg', title: '暗黑国风动作Rogue游戏', color: 'rgb(100, 67, 68)' },
+      { url: './images/slider03.jpg', title: '八年游戏策划缝合游戏', color: 'rgb(100, 67, 68)' },
+      { url: './images/slider04.jpg', title: '黄金风味的煎饼', color: 'rgb(100, 67, 68)' },
+      { url: './images/slider05.jpg', title: '我愿与君共唱华夏歌', color: 'rgb(100, 67, 68)' },
+      { url: './images/slider06.jpg', title: '寒假在家干什么', color: 'rgb(100, 67, 68)' },
+      { url: './images/slider07.jpg', title: '哔哩哔哩小年YEAH', color: 'rgb(100, 67, 68)' },
+      { url: './images/slider08.jpg', title: '显卡保姆级选购指南', color: 'rgb(100, 67, 68)' },
+    ]
+
+
+    var next = document.querySelector(".next");
+    var prev = document.querySelector(".prev");
+    var img = document.querySelector("img");
+    var footer = document.querySelector("p");
+    var index = 0;
+    var num1 = document.getElementById("number1");
+    var num2 = document.getElementById("number2");
+    var num3 = document.getElementById("number3");
+    var num4 = document.getElementById("number4");
+    var num5 = document.getElementById("number5");
+    var num6 = document.getElementById("number6");
+    var num7 = document.getElementById("number7");
+    var num8 = document.getElementById("number8");
+    
+
+    var jishi;
+    function jishiqi(){
+      jishi=setInterval(function () {
+      index++;
+      if (index == sliderData.length) {
+        index = 0;
+      }
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+    }, 2000)
+    }
+
+    next.addEventListener('click', function () {
+      clearInterval(jishi);
+      index++;
+      if (index == sliderData.length) {
+        index = 0;
+      }
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+      jishiqi();
+    })
+    prev.addEventListener('click', function () {
+      clearInterval(jishi);
+      index--;
+      if (index < 0) {
+        index = sliderData.length-1;
+      }
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+      jishiqi();
+    })
+    num1.addEventListener('click', function () {
+      clearInterval(jishi);
+      index=0;
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+      jishiqi();
+    })
+    num2.addEventListener('click', function () {
+      clearInterval(jishi);
+      index=1;
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+      jishiqi();
+    })
+    num3.addEventListener('click', function () {
+      clearInterval(jishi);
+      index=2;
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+      jishiqi();
+    })
+    num4.addEventListener('click', function () {
+      clearInterval(jishi);
+      index=3;
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+      jishiqi();
+    })
+    num5.addEventListener('click', function () {
+      clearInterval(jishi);
+      index=4;
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+      jishiqi();
+    })
+    num6.addEventListener('click', function () {
+      clearInterval(jishi);
+      index=5;
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+      jishiqi();
+    })
+    num7.addEventListener('click', function () {
+      clearInterval(jishi);
+      index=6;
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+      jishiqi();
+    })
+    num8.addEventListener('click', function () {
+      clearInterval(jishi);
+      index=7;
+      footer.innerText = sliderData[index].title;
+      img.src = sliderData[index].url;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+      jishiqi();
+    })
+
+  </script>
+</body>
+
+</html>
